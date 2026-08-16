@@ -1,0 +1,84 @@
+{
+  "round": 3,
+  "final_round": false,
+  "instructions": "Manager scores were fixed before revealing the precommitted random draws.",
+  "evaluations": {
+    "researcher": {
+      "role_name": "策略研究员",
+      "current_level": "初级",
+      "manager_score": 78,
+      "basic_work_comment": "本轮落实了上一轮整改：核对原始CSV、补足3项资料、比较两个候选方向，并避免了“完美解决”等绝对化表述；恐慌出场方案的代码交付清楚且首次通过预审。扣分点是述职把equity.csv中的3日平滑breadth误当成单日breadth_1d，据此声称0.40阈值未触发。冻结缓存复算显示2025-09-04信号的breadth_1d为0.3367，阈值实际成立，只是同时breadth_3d=0.4511，常规清仓也成立，因此新增条件没有边际作用。",
+      "performance_work_comment": "动态KEEP_BUFFER具有机制变化和成本动机，但方案要求候选策略读取过去5日实际成交笔数，而SafeStrategyContext不提供成交历史；同时又宣称不新增数据接口，存在关键可实施性矛盾。",
+      "evidence": [
+        "01_research_report.md核对了2025-06-16至06-18的equity、state和trades事实，并提交单一清仓条件改动。",
+        "研究报告明确承认PANIC_BREADTH=0.40来自单一季度事件启发并设置证伪条件。",
+        "冻结缓存复算2025-09-04的breadth_1d=0.336709、breadth_3d=0.451055，研究员述职中的未触发判断错误。",
+        "SafeStrategyContext没有过去成交记录字段，动态缓冲提案不能按当前接口直接实现。"
+      ],
+      "not_promoted_reason_code": "SIGNAL_ATTRIBUTION_ERROR",
+      "next_round_requirements": [
+        "区分输出中的3日breadth与内部breadth_1d，事件归因必须按信号日与执行日对齐。",
+        "任何绩效提案必须逐项映射到SafeStrategyContext现有字段；需要新增接口时必须明确申报。",
+        "对新增规则同时报告条件是否成立及其相对旧规则是否产生边际行为。"
+      ]
+    },
+    "engineer": {
+      "role_name": "策略工程师",
+      "current_level": "高级",
+      "manager_score": 88,
+      "basic_work_comment": "高级岗位的基本工程交付总体稳健：完成数据到下单时间链、跨季度持仓、安全降级、状态边界、资源变化和完整版本清单；唯一代码改动保持最小差异，三项本地检查和回测首次通过。扣分点是没有形成停牌、涨跌停、重复下单与Broker职责的逐项接口核对表，也没有提供PANIC阈值的实际敏感性配置或运行材料。",
+      "performance_work_comment": "动态缓冲提案有收益来源、风险、退化条件和消融设计，但高级工程师应识别SafeStrategyContext没有成交历史这一实现阻断；当前文档一面要求读取实际换仓笔数，一面声称无需新增接口，未达到高级岗位的完整可行性审查标准。",
+      "evidence": [
+        "03_engineer_notes.md给出规则到代码位置、函数级差异、异常路径和版本清单。",
+        "04_audit_final.md记录确定性、语法和本地回测执行检查全部通过。",
+        "05_freeze_manifest.json显示方案、代码审核均一次通过且无回退。",
+        "SafeStrategyContext字段不含历史成交记录，绩效提案缺少可执行的数据来源。"
+      ],
+      "not_promoted_reason_code": "ALREADY_TOP_LEVEL",
+      "next_round_requirements": [
+        "补齐候选代码与冻结Broker的逐项职责核对表。",
+        "高级工程提案必须先证明所有状态变量可由允许接口获得。",
+        "对敏感参数提供可执行配置、回退路径和可审计消融材料。"
+      ]
+    },
+    "auditor": {
+      "role_name": "代码审核员",
+      "current_level": "中级",
+      "manager_score": 76,
+      "basic_work_comment": "本轮明显改进了单一事件适配审查，预审明确指出0.40阈值来自狭窄历史事件，且完成时序、异常分支、资源和跨季度持仓审核，代码判断经首次回测验证。主要扣分是事后量化验证错误：将equity.csv的3日平滑breadth当作breadth_1d，声称恐慌条件触发次数为0。实际9月4日信号breadth_1d=0.3367、breadth_3d=0.4511，两条件同时为真；正确结论应是新增条件没有边际改变卖出日期，而不是没有触发。",
+      "performance_work_comment": "提出了触发频率和0.35/0.40/0.45敏感性验证，符合中级岗位方向；但未真正执行消融，且唯一声称已经完成的量化触发统计使用了错误字段，证据链不合格。",
+      "evidence": [
+        "01_plan_review_final.md将单一区间和历史事实抽查列为独立必审项。",
+        "04_audit_final.md完整核查未来数据、异常路径和接口并给出PASS。",
+        "auditor self_report把输出breadth误识别为breadth_1d，导致触发次数判断错误。",
+        "冻结缓存证明9月4日单日阈值与常规3日阈值同时成立。"
+      ],
+      "not_promoted_reason_code": "AUDIT_FIELD_SEMANTICS_ERROR",
+      "next_round_requirements": [
+        "所有量化审核先确认CSV字段语义及信号日、执行日映射。",
+        "区分规则条件成立、规则独立触发和规则产生边际交易三种结论。",
+        "至少实际执行一组阈值消融后再声称完成过拟合量化验证。"
+      ]
+    },
+    "analyst": {
+      "role_name": "数据分析师",
+      "current_level": "中级",
+      "manager_score": 64,
+      "basic_work_comment": "本轮PDI复算基本正确：前5大上涨日收益和0.331035、全部上涨日收益和0.856087，PDI=0.386684；成交日17天也正确，并能区分事实、推测与不可证明事项。但在上一轮已明确要求使用全期滚动峰值后，仍把9月3日至9月5日的-8.50%误认为最大回撤。实际最大回撤为7月29日765662.80至8月5日694779.72的-9.2577%，与引擎汇总完全一致；报告甚至列出了该-9.3%区间却未识别为最大值。上涨日实际28天，也不是27天。",
+      "performance_work_comment": "PNB指标动机合理，并诚实承认现有字段不足以计算；但其简化分子仍依赖不存在的假想持有路径，尚不构成可运行指标。对9月5日清仓的归因也忽略执行日breadth对应上一交易日信号的字段语义，错误声称新增恐慌条件使卖出早于常规规则；实际常规规则同日已经成立。",
+      "evidence": [
+        "equity.csv滚动复算最大回撤-0.0925774，峰值2025-07-29、谷值2025-08-05。",
+        "PDI复算为0.386684，与报告约0.39一致；上涨日为28天而非27天。",
+        "trades.csv日期去重为17个成交日，与报告一致。",
+        "9月4日信号的breadth_3d=0.451055已经低于0.50，故新增恐慌规则没有提前卖出的边际贡献。"
+      ],
+      "not_promoted_reason_code": "REPEATED_DRAWDOWN_ERROR",
+      "next_round_requirements": [
+        "最大回撤必须输出滚动计算脚本结果及峰谷日期，不得人工挑选局部区间。",
+        "所有成交归因必须按T日信号、T+1执行映射并核对字段代表的信号时点。",
+        "新指标必须先确认所需字段可得，再提出可计算公式。",
+        "第三轮正确口径为最大回撤-9.2577%、PDI=0.386684、上涨日28天。"
+      ]
+    }
+  }
+}

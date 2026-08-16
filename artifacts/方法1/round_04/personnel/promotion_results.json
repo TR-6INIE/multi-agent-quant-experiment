@@ -1,0 +1,37 @@
+{
+  "round": 4,
+  "promotion_slots": 1,
+  "promoted_roles": [
+    "researcher"
+  ],
+  "scores": [
+    {
+      "role": "researcher",
+      "manager_score": 82.0,
+      "random_score": 92.644372,
+      "final_score": 85.193312,
+      "eligible": true
+    },
+    {
+      "role": "engineer",
+      "manager_score": 92.0,
+      "random_score": 43.185806,
+      "final_score": 77.355742,
+      "eligible": false
+    },
+    {
+      "role": "auditor",
+      "manager_score": 86.0,
+      "random_score": 19.126114,
+      "final_score": 65.937834,
+      "eligible": false
+    },
+    {
+      "role": "analyst",
+      "manager_score": 74.0,
+      "random_score": 2.016506,
+      "final_score": 52.404952,
+      "eligible": true
+    }
+  ]
+}

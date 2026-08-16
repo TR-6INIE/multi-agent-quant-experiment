@@ -1,0 +1,60 @@
+# Secrets and machine-local configuration
+.env
+.env.*
+!.env.example
+**/models.local.json
+**/config/experiment.json
+**/experiment_state.json
+**/*secret*
+**/*credential*
+*.pem
+*.p12
+*.key
+
+# Raw/proprietary market and financial data
+data/
+cache/
+.cache/
+*.npz
+*.npy
+*.DAT
+*.dat
+*.parquet
+*.feather
+*.pickle
+*.pkl
+*.h5
+*.hdf5
+*.db
+*.sqlite*
+
+# Detailed backtest data (only aggregate result CSVs under results/ are public)
+**/trades.csv
+**/equity.csv
+**/state.csv
+**/orders.csv
+**/ending_portfolio.json
+**/06_qmt_result.*
+**/06_local_backtest_result.*
+**/development_backtest_attempt_*/
+**/input/
+**/logs/
+方法*/runs/
+
+# Python/editor artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# OS files and transient outputs
+Thumbs.db
+.DS_Store
+*.tmp
+*.log
+dist/
+build/

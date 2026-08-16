@@ -1,0 +1,84 @@
+{
+  "round": 4,
+  "final_round": false,
+  "instructions": "Manager scores were fixed before revealing the precommitted random draws.",
+  "evaluations": {
+    "researcher": {
+      "role_name": "策略研究员",
+      "current_level": "初级",
+      "manager_score": 82,
+      "basic_work_comment": "本轮完成了上一轮整改的主体部分：正确复核2025-09-04的单日与3日宽度，承认恐慌条件无边际作用，比较两个候选方向并交付单一、无新增接口和无新增参数的入场改动，方案首次通过预审。扣分点是事后述职再次用输出的3日breadth=0.5574推断10月10日的breadth_1d未达0.58，从而错误声称旧规则不能入场。冻结缓存复算表明该信号breadth_1d=0.6342，旧规则同样成立；10月28日也同理。",
+      "performance_work_comment": "波动率期限结构动态KEEP_BUFFER提案已逐项映射到SafeStrategyContext.closes，解决了上一轮依赖不存在成交历史的接口矛盾，并给出回退和敏感性方向。该方案仍停留在文档层面，且固定阈值与实际降换手效果尚未通过消融验证。",
+      "evidence": [
+        "01_research_report.md正确闭环上一轮2025-09-04的字段语义和无边际贡献结论，并比较两个候选方向。",
+        "05_freeze_manifest.json和04_audit_final.md显示方案、代码审核均一次通过。",
+        "冻结缓存复算：10月10日执行对应breadth_1d=0.6342、breadth_3d=0.5574，10月28日对应0.5886/0.5266，旧规则均会入场；11月7日和12月25日才是新规则新增入场。",
+        "绩效提案仅使用现有closes字段，并明确历史不足和NaN时回退静态缓冲。"
+      ],
+      "not_promoted_reason_code": "POSTROUND_FIELD_SEMANTICS_ERROR",
+      "next_round_requirements": [
+        "所有边际行为结论必须同时复算breadth_1d与breadth_3d，不能从输出breadth反推单日值。",
+        "分别列出旧规则与新规则在每个入场信号日的布尔结果，明确共同触发和新增触发。",
+        "绩效机制进入代码前至少完成一组静态与动态缓冲消融。"
+      ]
+    },
+    "engineer": {
+      "role_name": "策略工程师",
+      "current_level": "高级",
+      "manager_score": 92,
+      "basic_work_comment": "高级工程交付完整且克制：按批准方案只替换入场条件并删除一个固定参数，完成规则到代码位置、数据到下单链路、候选与Broker职责、状态污染、异常降级、T+1、资源和版本清单审查；候选一次通过语法、确定性和本地回测检查。扣分点是停牌、涨跌停、重复下单职责未单列核对，且版本清单在回测后未同步回填SHA。",
+      "performance_work_comment": "动态KEEP_BUFFER方案证明了全部状态变量来自允许接口，并给出集中配置、回退路径、敏感性网格和否决条件，达到高级岗位的可实施设计要求。仍未实际执行消融，且未来实现前需把全局KEEP_BUFFER重构为参数或实例属性。",
+      "evidence": [
+        "03_engineer_notes.md提供研究规则到代码位置及候选代码与冻结Broker的职责表。",
+        "候选相对基线仅删除ENTRY_BREADTH并替换一处条件，没有扩大数据或执行权限。",
+        "04_audit_final.md记录本地确定性、语法和回测执行检查全部通过。",
+        "动态缓冲提案给出字段映射、参数网格、异常回退和验证材料。"
+      ],
+      "not_promoted_reason_code": "ALREADY_TOP_LEVEL",
+      "next_round_requirements": [
+        "补齐停牌、涨跌停、重复下单与Broker职责的逐项核对表。",
+        "冻结回测完成后同步回填候选SHA和验证状态。",
+        "实施动态缓冲时先重构全局常量并实际运行至少一组消融。"
+      ]
+    },
+    "auditor": {
+      "role_name": "代码审核员",
+      "current_level": "高级",
+      "manager_score": 86,
+      "basic_work_comment": "本轮对抗性审计能够严格区分breadth_1d与3日breadth，验证增量差异、未来数据、异常分支、接口职责和参数自由度，并识别相对条件数学上易成立、保持分支较少触发及冷启动退化等系统性风险，未因预期收益放宽门槛。主要扣分是上一轮明确要求的阈值消融仍未实际执行，且审计发生在回测前，未完成事后边际触发量化。",
+      "performance_work_comment": "系统性风险和原创性判断证据充分，并指出动态KEEP_BUFFER未来实现需要重构全局常量。高级岗位仍应把理论敏感性建议推进为可审计的实际运行结果。",
+      "evidence": [
+        "innovation_audit.md将新条件化简为2*breadths[0]>=breadths[1]+breadths[2]并分析行为后果。",
+        "04_audit_final.md检查未来数据、异常路径、资源与职责边界并给出PASS。",
+        "审计识别广度动量与价格动量正反馈、冷启动门槛退化等系统性风险。",
+        "私人述职明确承认未实际执行阈值消融和事后量化验证。"
+      ],
+      "not_promoted_reason_code": "ALREADY_TOP_LEVEL",
+      "next_round_requirements": [
+        "实际运行至少一组阈值或条件消融并保存结果。",
+        "回测后补做旧规则与新规则逐信号日的共同触发和新增触发统计。",
+        "继续独立检查高收益是否掩盖回撤贴线、集中度或状态退化。"
+      ]
+    },
+    "analyst": {
+      "role_name": "数据分析师",
+      "current_level": "中级",
+      "manager_score": 74,
+      "basic_work_comment": "本轮已纠正上一轮最严重的问题：最大回撤按全期滚动复算为-14.8800%并给出正确峰谷；PDI=0.664180、17个上涨日、105笔成交和24个成交日也均复算正确，能区分数据结论、推测和不可证明事项。主要扣分是再次混淆3日breadth与breadth_1d，错误声称10月10日、10月28日等单日值未达0.58并据此认定均为新规则边际入场；此外空仓实际为34/60而非33/60。",
+      "performance_work_comment": "WSUR公式字段可得、计算正确且解释清楚，是可复算的新指标；但它只描述候选策略本轮状态，不能单独形成改动的反事实证明。H1依赖组合入场后净值状态，未先证明候选接口可获得，H2较可实施但尚未验证。",
+      "evidence": [
+        "equity.csv滚动复算最大回撤-0.148800076，峰值2025-10-09、谷值2025-10-17，与报告一致。",
+        "PDI=0.66417975、上涨日17天、成交日24天和WSUR=26/27均复算一致。",
+        "equity.csv直接计数target_count=0为34行；若排除初始空仓日应写33/59，而非33/60。",
+        "冻结缓存显示10月10日与10月28日的breadth_1d分别为0.6342和0.5886，旧规则本来也会入场；报告对这两次的边际归因错误。"
+      ],
+      "not_promoted_reason_code": "REPEATED_SIGNAL_ATTRIBUTION_ERROR",
+      "next_round_requirements": [
+        "固化并附带最大回撤、PDI、WSUR、空仓日和成交日自动复算输出。",
+        "所有信号归因必须分别读取或复算breadth_1d与breadth_3d并对齐T日信号和T+1执行。",
+        "新指标不得被表述为因果反事实证据，除非存在旧规则并行回测。",
+        "下一轮假设先证明所需状态字段可由允许接口获得。"
+      ]
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "providers": {
+    "qwen": {
+      "base_url": "https://YOUR_QWEN_OPENAI_COMPATIBLE_ENDPOINT/v1",
+      "model": "qwen3.7-max",
+      "api_key_env": "DASHSCOPE_API_KEY",
+      "timeout_seconds": 180,
+      "max_retries": 3,
+      "temperature": 0.2,
+      "max_tokens": 12000,
+      "stream": true,
+      "extra_headers": {},
+      "extra_body": {
+        "enable_thinking": true
+      }
+    },
+    "deepseek": {
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-v4-pro",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "timeout_seconds": 180,
+      "max_retries": 3,
+      "temperature": 0.2,
+      "max_tokens": 32000,
+      "stream": false,
+      "extra_headers": {},
+      "extra_body": {
+        "reasoning_effort": "high",
+        "thinking": {
+          "type": "enabled"
+        }
+      }
+    },
+    "kimi": {
+      "base_url": "https://api.moonshot.cn/v1",
+      "model": "kimi-k3",
+      "api_key_env": "MOONSHOT_API_KEY",
+      "timeout_seconds": 600,
+      "max_retries": 2,
+      "temperature": 1.0,
+      "max_tokens": 12000,
+      "stream": true,
+      "extra_headers": {},
+      "extra_body": {}
+    },
+    "glm": {
+      "base_url": "https://open.bigmodel.cn/api/coding/paas/v4",
+      "model": "glm-5.2",
+      "api_key_env": "ZHIPUAI_API_KEY",
+      "timeout_seconds": 180,
+      "max_retries": 3,
+      "temperature": null,
+      "max_tokens": 12000,
+      "stream": false,
+      "extra_headers": {},
+      "extra_body": {
+        "thinking": {
+          "type": "disabled"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "round": 4,
+  "decision_as_of": "2025-09-30",
+  "evaluation_start": "2025-10-01",
+  "evaluation_end": "2025-12-31",
+  "sha256": "ec17792b29c2cb74a52568fc9dc3ca0aba443d2cbaa002205da69968c4aa8763",
+  "baseline_sha256": "2b229775f6dfec15c3597215ae523e9c5bb8d1657d474b200695ca15d8887035",
+  "plan_review_attempts": 1,
+  "plan_review_returns": 0,
+  "audit_attempts": 1,
+  "audit_returns": 0
+}

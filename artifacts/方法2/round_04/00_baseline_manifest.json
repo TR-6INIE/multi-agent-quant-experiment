@@ -1,0 +1,7 @@
+{
+  "round": 4,
+  "source_kind": "previous_round_frozen_strategy",
+  "source_round": 3,
+  "source_name": "05_strategy_frozen.py",
+  "sha256": "d94dbe6f9b934a66194a4102705ff753c16f12a839cd487dc8015351ae6bc6e6"
+}

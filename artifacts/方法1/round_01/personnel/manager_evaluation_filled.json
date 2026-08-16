@@ -1,0 +1,83 @@
+{
+  "round": 1,
+  "final_round": false,
+  "instructions": "Manager scores were fixed before revealing the precommitted random draws.",
+  "evaluations": {
+    "researcher": {
+      "role_name": "策略研究员",
+      "current_level": "初级",
+      "manager_score": 80,
+      "basic_work_comment": "围绕现有策略的breadth单日抖动提出了3日平滑方案，修改范围、数据时点、资源增量和证伪条件均较清楚，交接可以直接实施。主要不足是基础研究要求至少3个可追溯来源，实际仅提供2个；述职中把单一候选策略的良好结果表述成已经证明平滑有效，也超出了本轮无并行基线对照所能支持的结论。",
+      "performance_work_comment": "动态行业集中度提案与本轮平滑修改有区分，也给出了触发阈值与回退思路，具备进一步验证价值；但尚未用本轮数据证明其相对收益，不能作为已实现绩效计分。",
+      "evidence": [
+        "01_research_report.md明确比较breadth平滑与风险调整动量两个候选方向，并选择单一改动。",
+        "研究报告仅列出Metcalfe 2017和Feng et al. 2010两个外部来源，未达到至少3个来源的基础要求。",
+        "07_data_analysis.md明确指出无未平滑基线并行输出，无法定量归因本轮收益于平滑改动。",
+        "方案预审首次通过，说明交付规格总体可执行。"
+      ],
+      "not_promoted_reason_code": "EVIDENCE_DISCIPLINE_GAP",
+      "next_round_requirements": [
+        "至少提供3个可追溯且与候选改动直接相关的来源。",
+        "把候选策略绝对收益与改动增量效果分开表述，禁止在无对照时声称改动已被证明有效。",
+        "优先研究3月再入场滞后问题，并只提交一个可证伪的单变量改动。"
+      ]
+    },
+    "engineer": {
+      "role_name": "策略工程师",
+      "current_level": "初级",
+      "manager_score": 95,
+      "basic_work_comment": "准确实现了经预审通过的3日breadth平滑，保留原策略主体和成交约束；代码审核、本地语法检查和本地回测均首次通过，无退回、无回退、无基线复用。工程说明能够把规则映射到具体代码，并交代数据时点和异常路径。",
+      "performance_work_comment": "绩效提案与基础实现分开陈述，未把尚未实现的动态行业集中度混入冻结代码。下一步仍应把性能提案的参数、回退条件和复杂度预算写得更完整。",
+      "evidence": [
+        "02_strategy_diff_attempt_1.patch显示核心改动集中在BREADTH_SMOOTH_DAYS、engine_mode和breadth历史窗口。",
+        "04_audit_final.md首次给出PASS。",
+        "06_local_backtest_manifest.json记录本地回测第1次尝试即成功。",
+        "05_freeze_manifest.json记录未使用fallback或reuse_previous。"
+      ],
+      "not_promoted_reason_code": "QUOTA_LIMIT",
+      "next_round_requirements": [
+        "继续保持单一改动和最小差异。",
+        "对下一轮入场方向确认补充边界条件、数据不足行为及资源预算。",
+        "在工程说明中列出能从回测输出直接复核的预期行为。"
+      ]
+    },
+    "auditor": {
+      "role_name": "代码审核员",
+      "current_level": "初级",
+      "manager_score": 91,
+      "basic_work_comment": "完成了接口、未来数据、异常路径、资源上限、单一改动和策略一致性检查，首次审核即给出可执行结论，且本地回测验证了判断。扣分点是私有创新审计曾把engine_mode=daily列为歧义，而最终审核又确认它符合当前模板，内部证据口径不够统一。",
+      "performance_work_comment": "能识别固定快照、行业映射和参数稳健性等后续风险，但部分意见属于一般性建议，尚未形成可直接证伪的独立绩效成果。",
+      "evidence": [
+        "04_audit_final.md逐项检查编译、接口、T+1、时间边界和资源使用并给出PASS。",
+        "本地verification.md确认冻结代码在隔离撮合器中完成并通过未来数据守卫。",
+        "innovation_audit.md与最终审核对engine_mode=daily的表述存在轻微不一致。",
+        "审核尝试次数为1且无退回。"
+      ],
+      "not_promoted_reason_code": "AUDIT_PRECISION_GAP",
+      "next_round_requirements": [
+        "统一私有创新审计与正式审核的接口口径。",
+        "把阻断项、数据限制与非阻断建议明确分栏。",
+        "复核分析报告中的持仓事实后再把疑点传入下一轮。"
+      ]
+    },
+    "analyst": {
+      "role_name": "数据分析师",
+      "current_level": "初级",
+      "manager_score": 84,
+      "basic_work_comment": "收益、基准、回撤、交易次数、空仓阶段和收益时间集中度分析较完整，也明确承认无并行基线时不能证明平滑改动的增量贡献。主要事实错误是报告称2月21日state同时持有603893.SH和300115.SZ；实际当日state仅含300115.SZ，603893.SH已在当日调仓卖出，因此由此提出的行业约束异常不成立。",
+      "performance_work_comment": "从3月亏损往返提出入场方向确认，问题与数据有直接联系，证伪条件也较清楚；但错误持仓疑点被重复写入绩效建议，降低了后续决策可靠性。",
+      "evidence": [
+        "07_data_analysis.md正确复算期末579277.00、总收益15.86%、年化91.68%和最大回撤12.70%。",
+        "报告正确指出季度收益高度集中于2月波段，并把无并行基线列为不可证明事项。",
+        "state.csv的2025-02-21记录不含603893.SH；trades.csv显示该股当日已卖出并买入300115.SZ。",
+        "报告对换手与费用标注为手工估算，没有伪装成引擎原生指标。"
+      ],
+      "not_promoted_reason_code": "FACTUAL_VERIFICATION_GAP",
+      "next_round_requirements": [
+        "所有持仓异常必须同时核对state.csv与trades.csv后再写入正式结论。",
+        "下一轮增加逐笔交易、持仓阶段与收益贡献分析。",
+        "继续区分绝对表现、相对基准表现和改动的增量效果。"
+      ]
+    }
+  }
+}

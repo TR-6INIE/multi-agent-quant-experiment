@@ -1,0 +1,84 @@
+{
+  "round": 2,
+  "final_round": false,
+  "instructions": "Manager scores were fixed before revealing the precommitted random draws.",
+  "evaluations": {
+    "researcher": {
+      "role_name": "策略研究员",
+      "current_level": "初级",
+      "manager_score": 72,
+      "basic_work_comment": "本轮补足了3项资料，比较了两个候选方向，并交付了可直接实现的单变量非对称入场方案；数据时点、资源增量和停止条件清楚。主要扣分是证据纪律仍不合格：报告继续声称上一轮state曾同时出现603893.SH与300115.SZ，并编造为T+1瞬时状态，但上一轮2025-02-21的state实际不含603893.SH；此外使用“完美解决滞后”这类无法由方案逻辑或单期结果支持的绝对表述。",
+      "performance_work_comment": "动态行业集中度提案具有机制变化和退化边界，但沿用了未经纠正的同行业双持仓前提，且行业平均动量口径仍未完全固定。提案可研究，尚不足以作为可靠绩效成果。",
+      "evidence": [
+        "01_research_report.md列出3项资料、比较非对称入场与缩短平滑窗口两个方向，并给出明确交付清单。",
+        "上一轮2025-02-21 state.csv仅含300115.SZ而不含603893.SH，研究报告中的瞬时双持仓解释没有事实基础。",
+        "方案仅基于上一季度一次3月亏损入场事件形成，报告未充分处理单一区间适配风险。",
+        "方案预审和本地执行均首次通过，说明实现规格本身可执行。"
+      ],
+      "not_promoted_reason_code": "FACTUAL_EVIDENCE_GAP",
+      "next_round_requirements": [
+        "引用历史异常前必须核对对应日期的state.csv和trades.csv原始记录。",
+        "禁止使用“完美解决”等超过证据强度的表述。",
+        "下一轮研究必须明确区分单一事件启发与可跨市场状态成立的机制假设。"
+      ]
+    },
+    "engineer": {
+      "role_name": "策略工程师",
+      "current_level": "中级",
+      "manager_score": 94,
+      "basic_work_comment": "在中级要求下仍保持了较高工程质量：将数据、信号、组合和执行边界解释清楚，准确实现唯一获批改动，保留T+1和Broker职责边界，列出历史不足、空信号、跨季度持仓、版本差异和资源增量。代码审核、确定性检查、语法检查和本地回测均首次通过。",
+      "performance_work_comment": "动态行业集中度提案与冻结实现严格分离，收益来源、风险、退化条件和复杂度预算均有说明。扣分点是行业平均动量使用原始值还是截面分位数仍未定稿，且停牌、涨跌停和重复下单主要以依赖Broker概括，未逐项形成中级层面的接口核对表。",
+      "evidence": [
+        "03_engineer_notes.md提供研究规则到代码位置对应表及函数级最小变更清单。",
+        "04_audit_final.md记录LOCAL_DETERMINISTIC_CHECK、LOCAL_SYNTAX_CHECK和LOCAL_BACKTEST_EXECUTION_CHECK全部通过。",
+        "05_freeze_manifest.json显示方案与审核均一次通过、无退回。",
+        "回测产生75笔成交且期末持仓与selected状态一致，未发生静默空仓或执行偏差。"
+      ],
+      "not_promoted_reason_code": "QUOTA_LIMIT",
+      "next_round_requirements": [
+        "将停牌、涨跌停、重复下单和T+1职责逐项映射到候选代码或冻结Broker。",
+        "在实施绩效提案前固定行业动量的唯一计算口径。",
+        "继续保持最小差异、一次审核通过和可复核行为清单。"
+      ]
+    },
+    "auditor": {
+      "role_name": "代码审核员",
+      "current_level": "中级",
+      "manager_score": 86,
+      "basic_work_comment": "完整追踪了信号时间链、T+1边界、历史不足、空breadth、跨季度持仓、资源与接口增量，代码审核结论经首次本地回测验证。扣分点是预审将“不新增参数”近似等同于低过拟合风险，没有充分指出方案由上一季度单一3月事件定制而来的单一区间适配风险，也未拦截研究报告中错误的历史持仓事实。",
+      "performance_work_comment": "能从核心机制判断动态行业集中度属于实质变化，并提出阈值敏感性、流动性消融和行业反转检验，符合中级绩效要求；但验证仍停留在方法设计，没有本地量化结果。",
+      "evidence": [
+        "04_audit_final.md逐项核查未来数据、异常分支、资源和接口并给出PASS。",
+        "01_plan_review_final.md识别未新增参数，但未充分评价方案对单一历史事件的适配风险。",
+        "innovation_audit.md提出多组阈值与机制消融验证方法。",
+        "审核尝试次数为1且本地检查全部通过。"
+      ],
+      "not_promoted_reason_code": "OVERFIT_REVIEW_GAP",
+      "next_round_requirements": [
+        "把单一区间、单一事件适配列为独立必审项，不以参数数量替代机制过拟合判断。",
+        "预审涉及历史事实时抽查原始state和trades记录。",
+        "将至少一项过拟合验证转化为可复算的本地量化证据。"
+      ]
+    },
+    "analyst": {
+      "role_name": "数据分析师",
+      "current_level": "中级",
+      "manager_score": 58,
+      "basic_work_comment": "报告覆盖收益、基准、阶段、集中度、交易与持仓核对，并纠正了上一轮只看瞬时状态的工作方法；但中级岗位的核心可复算指标出现多项严重错误。equity.csv可直接复算最大回撤为-5.319%，峰值2025-05-07、谷值2025-06-12，并非报告所称只能得到-4.3%；trades.csv实际只有15个成交日期，不是34个；上涨日12天、正收益和17.785%，前5大正收益和12.690%，PDI为0.7135，不是1.0。",
+      "performance_work_comment": "PDI的公式、动机和下一轮假设形式符合中级绩效要求，但实际计算违反了“前5大正收益之和不可能超过全部正收益之和”的基本恒等关系，且错误结果被用于判断集中度恶化，导致绩效结论不可采信。",
+      "evidence": [
+        "equity.csv逐日峰谷复算得到最大回撤-0.0531905，与引擎汇总完全一致。",
+        "trades.csv按日期去重为15个成交日，而报告写成34个。",
+        "equity.csv复算上涨日12天、正收益和0.177852、前5大正收益和0.126897，PDI=0.713497。",
+        "报告正确核对全期selected=actual且未再误报执行偏差。"
+      ],
+      "not_promoted_reason_code": "METRIC_CALCULATION_ERROR",
+      "next_round_requirements": [
+        "所有派生指标必须通过脚本复算并检查恒等关系和上下界。",
+        "最大回撤必须使用全期滚动峰值计算，不能只比较局部阶段。",
+        "成交日数量必须由trade_time日期去重得到。",
+        "下一轮重新计算本轮PDI=0.7135并纠正跨季比较。"
+      ]
+    }
+  }
+}

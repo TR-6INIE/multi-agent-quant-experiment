@@ -1,0 +1,122 @@
+{
+  "role_models": {
+    "researcher": "qwen",
+    "engineer": "deepseek",
+    "auditor": "glm",
+    "analyst": "kimi"
+  },
+  "rounds": [
+    {
+      "number": 1,
+      "decision_as_of": "2024-12-31",
+      "evaluation_start": "2025-01-01",
+      "evaluation_end": "2025-03-31",
+      "final_round": false
+    },
+    {
+      "number": 2,
+      "decision_as_of": "2025-03-31",
+      "evaluation_start": "2025-04-01",
+      "evaluation_end": "2025-06-30",
+      "final_round": false
+    },
+    {
+      "number": 3,
+      "decision_as_of": "2025-06-30",
+      "evaluation_start": "2025-07-01",
+      "evaluation_end": "2025-09-30",
+      "final_round": false
+    },
+    {
+      "number": 4,
+      "decision_as_of": "2025-09-30",
+      "evaluation_start": "2025-10-01",
+      "evaluation_end": "2025-12-31",
+      "final_round": false
+    },
+    {
+      "number": 5,
+      "decision_as_of": "2025-12-31",
+      "evaluation_start": "2026-01-01",
+      "evaluation_end": "2026-06-30",
+      "final_round": true
+    }
+  ],
+  "trading_rules": {
+    "initial_asset": 500000,
+    "universe": "上海证券交易所和深圳证券交易所上市股票",
+    "commission_rate": 0.000285,
+    "stamp_tax_rate": 0.00025,
+    "slippage_rate": 0,
+    "bar_period": "5m",
+    "benchmark_name": "科创50",
+    "t_plus_one": true,
+    "long_only": true,
+    "leverage_allowed": false,
+    "max_positions": null,
+    "max_single_stock_weight": null
+  },
+  "max_plan_review_returns": 2,
+  "max_code_submissions": 3,
+  "code_audit_policy": {
+    "freeze_issue_list_after_first_review": true,
+    "blocking_severities": [
+      "BLOCKER",
+      "MAJOR"
+    ],
+    "first_round_failed_delivery": "reuse_baseline",
+    "later_round_failed_delivery": "reuse_baseline"
+  },
+  "random_seed": "multi-agent-incremental-fixed-seed-v1",
+  "max_previous_context_chars": 60000,
+  "max_reference_context_chars": 100000,
+  "strategy_evolution": {
+    "mode": "incremental_improvement",
+    "initial_baseline_file": "本地回测策略基线/broad_momentum_strategy.py",
+    "max_core_changes_per_round": 3,
+    "allow_full_strategy_replacement": false,
+    "allow_universe_expansion": false,
+    "allow_bar_frequency_increase": true,
+    "allow_new_data_interfaces": false,
+    "resource_policy": "候选代码只能使用冻结回测接口；不得读取文件、网络、完整缓存或评价期未来数组；每轮基于上一轮冻结策略进行有限改进"
+  },
+  "local_backtest": {
+    "package_root": "./backtest_package_root",
+    "cache": "./data/market_cache.npz",
+    "fundamental_cache": "./data/fundamental_pit_cache.npz",
+    "max_fundamental_fields": 8,
+    "industry_dir": "./data/sw1_industries",
+    "benchmark_qmt_datadir": "./data/qmt_datadir",
+    "qmt_datadir": "./data/qmt_datadir",
+    "snapshot_cache_dir": "./.cache/local_market_snapshots",
+    "benchmark_code": "000688.SH",
+    "benchmark_name": "科创50",
+    "initial_cash": 500000,
+    "commission_rate": 0.000285,
+    "stamp_rate": 0.00025,
+    "minimum_commission": 5.0,
+    "qmt_selected_state": true,
+    "max_signal_times": 4,
+    "max_intraday_lookback_sessions": 80,
+    "max_minute_orders_per_bar": 50,
+    "max_volume_participation": 0.1,
+    "timeout_seconds": 600,
+    "snapshot_policy": "固定当前股票池与申万一级行业快照；财务数据按公告可得日形成时点快照并滞后一交易日提供；保留股票池幸存者偏差与行业分类前视偏差",
+    "development": {
+      "start": "2022-01-01",
+      "end": "2024-12-31",
+      "cache": "./data/development_market_cache.npz",
+      "fundamental_cache": "./data/development_fundamental_cache.npz",
+      "manifest": "./data/development_cache_manifest.json",
+      "snapshot_cache_dir": "./.cache/development_snapshots",
+      "initial_cash": 500000,
+      "max_feedback_chars": 60000,
+      "allow_feedback_revision": true
+    }
+  },
+  "max_backtest_detail_chars": 80000,
+  "literature_search": {
+    "enabled": true,
+    "per_database_limit": 3
+  }
+}
